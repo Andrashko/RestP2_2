@@ -12,6 +12,7 @@ using WebApplication2.Models;
 
 namespace WebApplication2.Controllers
 {
+    [Authorize]
     public class GoodsController : ApiController
     {
         private Database1Entities db = new Database1Entities();

@@ -10,7 +10,7 @@ namespace WebApplication2.Models
         
         public bool Pay(float Sum)
         {
-            return Sum < 200;
+            return false;
         }
 
         public string Name()

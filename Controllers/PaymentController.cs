@@ -3,15 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
-using System.Web.Mvc;
-using WebApplication2.Models;
 
-namespace WebApplication2.Controllers
+using WebApplication2.Models;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+
+
+  
+
+    namespace WebApplication2.Controllers
 {
+    [Authorize]
     public class PaymentController : ApiController
     {
+        
         // GET: Sale
         private List<IPayment> PaymentMethods = new List<IPayment>() { new CashPayment(), new CardPayment() };
+   
         public IHttpActionResult Get([FromUri] string PaymentMethod, [FromUri] float Sum)
         {
             IPayment method = this.PaymentMethods.First(m => m.Name() == PaymentMethod);
