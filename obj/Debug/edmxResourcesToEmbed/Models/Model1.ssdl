@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Хранилище Database1Model" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Bill">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SaleTime" Type="datetime" />
+    <Property Name="CheckoutId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Goods">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Vendor" Type="nvarchar" MaxLength="50" />
+    <Property Name="Price" Type="real" Nullable="false" />
+    <Property Name="Stock" Type="real" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Sale">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="GoodId" Type="int" Nullable="false" />
+    <Property Name="BillId" Type="int" Nullable="false" />
+    <Property Name="Number" Type="real" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Сheckout">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Cashier" Type="nvarchar" MaxLength="50" />
+    <Property Name="Balance" Type="real" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Bill_Checkout">
+    <End Role="Сheckout" Type="Self.Сheckout" Multiplicity="1" />
+    <End Role="Bill" Type="Self.Bill" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Сheckout">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Bill">
+        <PropertyRef Name="CheckoutId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Sale_Bill">
+    <End Role="Bill" Type="Self.Bill" Multiplicity="1" />
+    <End Role="Sale" Type="Self.Sale" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Bill">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Sale">
+        <PropertyRef Name="BillId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Sale_Goods">
+    <End Role="Goods" Type="Self.Goods" Multiplicity="1" />
+    <End Role="Sale" Type="Self.Sale" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Goods">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Sale">
+        <PropertyRef Name="GoodId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Хранилище Database1ModelContainer">
+    <EntitySet Name="Bill" EntityType="Self.Bill" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Goods" EntityType="Self.Goods" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Sale" EntityType="Self.Sale" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Сheckout" EntityType="Self.Сheckout" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Bill_Checkout" Association="Self.FK_Bill_Checkout">
+      <End Role="Сheckout" EntitySet="Сheckout" />
+      <End Role="Bill" EntitySet="Bill" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Sale_Bill" Association="Self.FK_Sale_Bill">
+      <End Role="Bill" EntitySet="Bill" />
+      <End Role="Sale" EntitySet="Sale" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Sale_Goods" Association="Self.FK_Sale_Goods">
+      <End Role="Goods" EntitySet="Goods" />
+      <End Role="Sale" EntitySet="Sale" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

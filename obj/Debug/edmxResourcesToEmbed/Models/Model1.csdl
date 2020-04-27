@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Database1Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="Database1Entities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Bill" EntityType="Database1Model.Bill" />
+    <EntitySet Name="Sale" EntityType="Database1Model.Sale" />
+    <EntitySet Name="Сheckout" EntityType="Database1Model.Сheckout" />
+    <AssociationSet Name="FK_Bill_Checkout" Association="Database1Model.FK_Bill_Checkout">
+      <End Role="Сheckout" EntitySet="Сheckout" />
+      <End Role="Bill" EntitySet="Bill" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Sale_Bill" Association="Database1Model.FK_Sale_Bill">
+      <End Role="Bill" EntitySet="Bill" />
+      <End Role="Sale" EntitySet="Sale" />
+    </AssociationSet>
+    <EntitySet Name="Goods" EntityType="Database1Model.Goods" />
+    <AssociationSet Name="FK_Sale_Goods" Association="Database1Model.FK_Sale_Goods">
+      <End Role="Goods" EntitySet="Goods" />
+      <End Role="Sale" EntitySet="Sale" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Bill">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SaleTime" Type="DateTime" Precision="3" />
+    <Property Name="CheckoutId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Сheckout" Relationship="Database1Model.FK_Bill_Checkout" FromRole="Bill" ToRole="Сheckout" />
+    <NavigationProperty Name="Sale" Relationship="Database1Model.FK_Sale_Bill" FromRole="Bill" ToRole="Sale" />
+  </EntityType>
+  <EntityType Name="Sale">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="GoodId" Type="Int32" Nullable="false" />
+    <Property Name="BillId" Type="Int32" Nullable="false" />
+    <Property Name="Number" Type="Single" Nullable="false" />
+    <NavigationProperty Name="Bill" Relationship="Database1Model.FK_Sale_Bill" FromRole="Sale" ToRole="Bill" />
+    <NavigationProperty Name="Goods" Relationship="Database1Model.FK_Sale_Goods" FromRole="Sale" ToRole="Goods" />
+  </EntityType>
+  <EntityType Name="Сheckout">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Cashier" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Balance" Type="Single" Nullable="false" />
+    <NavigationProperty Name="Bill" Relationship="Database1Model.FK_Bill_Checkout" FromRole="Сheckout" ToRole="Bill" />
+  </EntityType>
+  <Association Name="FK_Bill_Checkout">
+    <End Type="Database1Model.Сheckout" Role="Сheckout" Multiplicity="1" />
+    <End Type="Database1Model.Bill" Role="Bill" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Сheckout">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Bill">
+        <PropertyRef Name="CheckoutId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Sale_Bill">
+    <End Type="Database1Model.Bill" Role="Bill" Multiplicity="1" />
+    <End Type="Database1Model.Sale" Role="Sale" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Bill">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Sale">
+        <PropertyRef Name="BillId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Goods">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Vendor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Price" Type="Single" Nullable="false" />
+    <Property Name="Stock" Type="Single" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Sale_Goods">
+    <End Type="Database1Model.Goods" Role="Goods" Multiplicity="1" />
+    <End Type="Database1Model.Sale" Role="Sale" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Goods">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Sale">
+        <PropertyRef Name="GoodId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
